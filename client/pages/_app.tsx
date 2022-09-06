@@ -6,6 +6,7 @@ import { NotificationsProvider } from '@mantine/notifications'
 import { NextPage } from 'next'
 import { ReactElement, ReactNode } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { MeContextProvider } from '../context/me'
 
 const queryClient = new QueryClient();
 
@@ -34,11 +35,13 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         theme={{ colorScheme: "light" }}>
         <NotificationsProvider>
           <QueryClientProvider client={queryClient}>
-            {getLayout(
-              <main>
-                <Component {...pageProps} />
-              </main>
-            )}
+            <MeContextProvider>
+              {getLayout(
+                <main>
+                  <Component {...pageProps} />
+                </main>
+              )}
+            </MeContextProvider>
           </QueryClientProvider>
         </NotificationsProvider>
       </MantineProvider>
