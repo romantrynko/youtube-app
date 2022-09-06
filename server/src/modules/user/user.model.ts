@@ -1,33 +1,32 @@
-import { getModelForClass, prop, pre } from '@typegoose/typegoose'
-import argon2 from 'argon2'
+import { getModelForClass, prop, pre } from "@typegoose/typegoose";
+import argon2 from "argon2";
 
-@pre<User>('save', async function (next) {
-  if (this.isModified('password') || this.isNew) {
+@pre<User>("save", async function (next) {
+  if (this.isModified("password") || this.isNew) {
     const hash = await argon2.hash(this.password);
 
-    this.password = hash
+    this.password = hash;
 
-    return next()
+    return next();
   }
 })
-
 export class User {
   @prop({ required: true, unique: true })
-  public username: string
+  public username: string;
 
   @prop({ required: true, unique: true })
-  public email: string
+  public email: string;
 
   @prop({ required: true })
-  public password: string
+  public password: string;
 
-  public async comparePassword(password: string): Promise<boolean>{
-    return argon2.verify(this.password, password)
+  public async comparePassword(password: string): Promise<boolean> {
+    return argon2.verify(this.password, password);
   }
 }
 
 export const UserModel = getModelForClass(User, {
   schemaOptions: {
-    timestamps: true
-  }
-})
+    timestamps: true,
+  },
+});

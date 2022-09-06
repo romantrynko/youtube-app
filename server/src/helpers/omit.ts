@@ -1,7 +1,7 @@
 function omit<T>(obj: T, property: keyof T | (keyof T)[]) {
   if (Array.isArray(property)) {
-    const entries = Object.entries(obj).filter(item => {
-      const [key] = item
+    const entries = Object.entries(obj).filter((item) => {
+      const [key] = item;
 
       return !property.includes(key as keyof T);
     });
@@ -11,14 +11,7 @@ function omit<T>(obj: T, property: keyof T | (keyof T)[]) {
 
   const { [property]: unused, ...rest } = obj;
 
-  return rest
+  return rest;
 }
-
-// const obj = {
-//   username: 'Roman',
-//   tom: 'tom'
-// }
-
-// omit(obj, ['tom', 'username'])
 
 export default omit;

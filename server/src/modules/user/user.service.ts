@@ -5,5 +5,5 @@ export async function createUser(user: Omit<User, 'comparePassword'>) {
 }
 
 export async function findUserByEmail(email: User['email']) {
-  return UserModel.findOne({ email })
+  return UserModel.findOne({ email });
 }
