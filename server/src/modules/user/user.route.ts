@@ -14,4 +14,4 @@ router.get('/', requireUser, (req, res) => {
 router.post('/', processRequestBody(registerUserSchema.body), registerUserHandler)
 
 
-export default router
+export default router;
