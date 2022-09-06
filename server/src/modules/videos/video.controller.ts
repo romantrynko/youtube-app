@@ -113,10 +113,29 @@ export async function streamVideoHandler(req: Request, res: Response) {
 
   const chunkStart = Number(range.replace(/\D/g, ''))
 
-  const chunkEnnd = Math.min(
+  const chunkEnd = Math.min(
     chunkStart + CHUNK_SIZE_IN_BYTES,
     fileSizeInBytes - 1
   );
+
+  const contentLength = chunkEnd - chunkStart + 1;
+
+  const headers = {
+    "Content-Range": `bytes ${chunkStart}-${chunkEnd}/${fileSizeInBytes}`,
+    "Accept-Ranges": "bytes",
+    "Content_length": contentLength,
+    "Content-Type": `video/${video.extension}`,
+    // "Cross-Origin_Resource-Policy": 'cross-origin'
+  }
+
+  res.writeHead(StatusCodes.PARTIAL_CONTENT, headers)
+
+  const videoStream = fs.createReadStream(filePath, {
+    start: chunkStart,
+    end: chunkEnd
+  })
+
+  videoStream.pipe(res);
 
 }
 
