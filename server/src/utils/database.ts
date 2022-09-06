@@ -5,11 +5,7 @@ const DB_CONNECTION_STRING = "mongodb+srv://trynkoroman:trynkoroman30@nextjscrud
 
 export async function connectToDatabase() {
   try {
-    await mongoose.connect(DB_CONNECTION_STRING, {
-      // useNewUrlParser: true,
-      // useUnifiedTopology: true,
-      family: 4,
-    });
+    await mongoose.connect(DB_CONNECTION_STRING);
     logger.info("Connect to database");
   } catch (e) {
     logger.error(e, "Failed to connect to database. Goodbye");
