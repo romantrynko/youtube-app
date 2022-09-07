@@ -7,7 +7,10 @@ export async function registerUserHandler(req: Request<{}, {}, RegisterUserBody>
   const { username, email, password } = req.body;
 
   try {
-    await createUser({ username, email, password });
+    await createUser({
+      username, email, password,
+      __v: 0
+    });
 
     return res.status(StatusCodes.CREATED).send('User created');
   } catch (error) {

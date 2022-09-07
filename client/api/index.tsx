@@ -42,3 +42,18 @@ export function uploadVideo({
     }
   }).then(res => res.data)
 }
+
+export function updateVideo({ videoId, ...payload }: {
+  videoId: string,
+  title: string,
+  description: string,
+  published: boolean
+}) {
+  return axios.patch(`${videosBase}/${videoId}`, payload, {
+    withCredentials: true,
+  })
+}
+
+export function getVideos() {
+  return axios.get(videosBase).then(res => res.data)
+}
