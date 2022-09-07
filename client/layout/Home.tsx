@@ -16,7 +16,7 @@ const HomePageLayout = ({ children }: { children: React.ReactNode }) => {
       <AppShell
         padding='md'
         navbar={
-          <Navbar width={{ base: 10 }} height={500} p='xs'>
+          <Navbar width={{ base: 300 }} height={500} p='xs'>
             Side item
           </Navbar>
         }

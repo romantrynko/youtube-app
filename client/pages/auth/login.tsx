@@ -1,35 +1,42 @@
-import React from 'react'
-import { useForm } from '@mantine/form'
-import { useMutation } from 'react-query'
-import { AxiosError } from 'axios'
-import Head from 'next/head'
-import { Button, Container, Paper, PasswordInput, Stack, TextInput, Title } from '@mantine/core'
-import { showNotification, updateNotification } from '@mantine/notifications'
-import { useRouter } from 'next/router'
-import { loginUser } from '../../api'
+import {
+  Button,
+  Container,
+  Paper,
+  PasswordInput,
+  Stack,
+  TextInput,
+  Title,
+} from "@mantine/core";
+import { useForm } from "@mantine/hooks";
+import { showNotification, updateNotification } from "@mantine/notifications";
+import { AxiosError } from "axios";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { ReactElement } from "react";
+import { useMutation } from "react-query";
+import { login } from "../../api";
 
-const LoginPage = () => {
-
+function LoginPage() {
   const router = useRouter();
 
   const form = useForm({
     initialValues: {
-      email: '',
-      username: '',
-      password: '',
-      confirmPassword: '',
-    }
-  })
+      email: "",
+      username: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
   const mutation = useMutation<
     string,
     AxiosError,
-    Parameters<typeof loginUser>['0']
-  >(loginUser, {
+    Parameters<typeof login>["0"]
+  >(login, {
     onSuccess: () => {
-      router.push("/")
-    }
-  })
+      router.push("/");
+    },
+  });
 
   return (
     <>
@@ -37,37 +44,32 @@ const LoginPage = () => {
         <title>Login</title>
       </Head>
       <Container>
-        <Title>
-          Login
-        </Title>
+        <Title>Login</Title>
 
-        <Paper withBorder shadow='md' p={30} mt={30} radius='md'>
-          <form
-            onSubmit={form.onSubmit(
-              (values) =>
-                mutation.mutate(values)
-            )}
-          >
+        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+          <form onSubmit={form.onSubmit((values) => mutation.mutate(values))}>
             <Stack>
               <TextInput
                 label="Email"
-                placeholder='roman@gmail.com'
+                placeholder="jane@example.com"
                 required
                 {...form.getInputProps("email")}
               />
+
               <PasswordInput
                 label="Password"
-                placeholder='Your password'
+                placeholder="Your strong password"
                 required
                 {...form.getInputProps("password")}
               />
-              <Button type='submit'>Login</Button>
+
+              <Button type="submit">Login</Button>
             </Stack>
           </form>
         </Paper>
       </Container>
     </>
-  )
+  );
 }
 
-export default LoginPage
+export default LoginPage;

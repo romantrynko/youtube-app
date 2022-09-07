@@ -1,106 +1,107 @@
-import React from 'react'
-import { useForm } from '@mantine/form'
-import { useMutation } from 'react-query'
-import { registerUser } from '../../api'
-import { AxiosError } from 'axios'
-import Head from 'next/head'
-import { Button, Container, Paper, PasswordInput, Stack, TextInput, Title } from '@mantine/core'
-import { showNotification, updateNotification } from '@mantine/notifications'
-import { useRouter } from 'next/router'
+import {
+  Button,
+  Container,
+  Paper,
+  PasswordInput,
+  Stack,
+  TextInput,
+  Title,
+} from "@mantine/core";
+import { useForm } from "@mantine/hooks";
+import { showNotification, updateNotification } from "@mantine/notifications";
+import { AxiosError } from "axios";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { ReactElement } from "react";
+import { useMutation } from "react-query";
+import { registerUser } from "../../api";
 
-const RegisterPage = () => {
-
+function RegisterPage() {
   const router = useRouter();
 
   const form = useForm({
     initialValues: {
-      email: '',
-      username: '',
-      password: '',
-      confirmPassword: '',
-    }
-  })
+      email: "",
+      username: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
   const mutation = useMutation<
     string,
     AxiosError,
-    Parameters<typeof registerUser>['0']
+    Parameters<typeof registerUser>["0"]
   >(registerUser, {
     onMutate: () => {
       showNotification({
-        id: 'register',
-        title: 'Creating account',
-        message: "Please wait",
-        loading: true
-      })
+        id: "register",
+        title: "Creating account",
+        message: "Please wait...",
+        loading: true,
+      });
     },
     onSuccess: () => {
       updateNotification({
-        id: 'register',
-        title: 'Success',
-        message: "Succesfully created account",
+        id: "register",
+        title: "Success",
+        message: "Successfully created account",
       });
 
-      router.push("/auth/login")
+      router.push("/auth/login");
     },
     onError: () => {
-      showNotification({
-        id: 'register',
-        title: 'Error',
-        message: "Could't create account",
-      })
-    }
-  })
+      updateNotification({
+        id: "register",
+        title: "Error",
+        message: "Could not create account",
+      });
+    },
+  });
 
   return (
     <>
       <Head>
-        <title>Register User</title>
+        <title>Register user</title>
       </Head>
       <Container>
-        <Title>
-          Register
-        </Title>
+        <Title>Register</Title>
 
-        <Paper withBorder shadow='md' p={30} mt={30} radius='md'>
-          <form
-            onSubmit={form.onSubmit(
-              (values) =>
-                mutation.mutate(values)
-            )}
-          >
+        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+          <form onSubmit={form.onSubmit((values) => mutation.mutate(values))}>
             <Stack>
               <TextInput
                 label="Email"
-                placeholder='roman@gmail.com'
+                placeholder="jane@example.com"
                 required
                 {...form.getInputProps("email")}
               />
               <TextInput
                 label="Username"
-                placeholder='Roman Trynko'
+                placeholder="tomdoestech"
                 required
                 {...form.getInputProps("username")}
               />
               <PasswordInput
                 label="Password"
-                placeholder='Your password'
+                placeholder="Your strong password"
                 required
                 {...form.getInputProps("password")}
               />
               <PasswordInput
-                label="confirm password"
-                placeholder='Repeat your password'
+                label="Confirm password"
+                placeholder="Your strong password"
                 required
                 {...form.getInputProps("confirmPassword")}
               />
-              <Button type='submit'>Register</Button>
+
+              <Button type="submit">Register</Button>
             </Stack>
           </form>
         </Paper>
       </Container>
     </>
-  )
+  );
 }
 
-export default RegisterPage
+export default RegisterPage;
